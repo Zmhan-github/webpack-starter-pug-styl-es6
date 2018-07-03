@@ -1,21 +1,17 @@
 const path = require('path');
+const htmlWebpackPlugin = require('html-webpack-plugin');
+const miniCSSExtractPlugin = require('mini-css-extract-plugin');
+const optimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   entry: {
     main: './src/main.js' // точка входа
   },
-  mode: "development",
+  mode: "production",
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name]-bundle.js',
     publicPath: '/' // общий путь для бандла 
-  },
-  devServer: {
-    contentBase: 'dist',
-    overlay: true, // вывод ошибок в браузер
-    stats: {
-      colors: true
-    }
   },
   module: {
     rules: [
@@ -32,7 +28,7 @@ module.exports = {
         test: /\.css$/,
         use: [
           { 
-            loader: "style-loader"
+            loader: miniCSSExtractPlugin.loader
           },
           {
             loader: "css-loader"
@@ -43,10 +39,10 @@ module.exports = {
         test: /\.scss$/,
         use: [
           { 
-            loader: "style-loader"
+            loader: miniCSSExtractPlugin.loader
           },
           {
-            loader: "css-loader"
+            loader: "css-loader",
           },
           {
             loader: "sass-loader"
@@ -57,19 +53,7 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: 'file-loader', // загрузить файлы
-            options: {
-              name: '[name].html' 
-            }
-          },
-          {
-            loader: 'extract-loader' // найти пути
-          },
-          {
-            loader: 'html-loader', // снизу вверх 
-            options: {
-              attrs: ['img:src']
-            }
+            loader: 'html-loader'
           }
         ]
       },
@@ -85,5 +69,15 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new optimizeCSSAssetsPlugin(),
+    new miniCSSExtractPlugin({
+        filename: '[name]-[contenthash].css'
+    }),
+    new htmlWebpackPlugin({
+        title: 'Chat app',
+        template: './src/index.html'
+    })
+  ]
 };
