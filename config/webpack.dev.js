@@ -16,16 +16,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         use: [
-          // {
-          //   loader: "sass-loader"
-          // },
           { 
             loader: "style-loader"
           },
           {
             loader: "css-loader"
+          },
+          {
+            loader: "sass-loader"
           }
         ]
       },
