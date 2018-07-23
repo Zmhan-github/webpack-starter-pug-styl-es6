@@ -1,4 +1,5 @@
 const path = require('path');
+const htmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -8,7 +9,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name]-bundle.js',
-    publicPath: '/' // общий путь для бандла 
+    publicPath: '/' // общий путь для бандла
   },
   devServer: {
     contentBase: 'dist',
@@ -31,7 +32,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          { 
+          {
             loader: "style-loader"
           },
           {
@@ -42,7 +43,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          { 
+          {
             loader: "style-loader"
           },
           {
@@ -54,25 +55,50 @@ module.exports = {
         ]
       },
       {
+        test: /\.styl$/,
+        use: [
+          { loader: "style-loader"  },
+          { loader: "css-loader"    },
+          // { loader: "postcss-loader"},
+          { loader: "stylus-loader" }
+        ]
+      },
+      {
         test: /\.html$/,
         use: [
           {
-            loader: 'file-loader', // загрузить файлы
-            options: {
-              name: '[name].html' 
-            }
-          },
-          {
-            loader: 'extract-loader' // найти пути
-          },
-          {
-            loader: 'html-loader', // снизу вверх 
-            options: {
-              attrs: ['img:src']
-            }
+            loader: 'html-loader'
           }
         ]
       },
+      {
+        test: /\.pug$/,
+        use: [
+          {
+            loader: 'pug-loader'
+          }
+        ]
+      },
+      // {
+      //   test: /\.html$/,
+      //   use: [
+      //     {
+      //       loader: 'file-loader', // загрузить файлы
+      //       options: {
+      //         name: '[name].html'
+      //       }
+      //     },
+      //     {
+      //       loader: 'extract-loader' // найти пути
+      //     },
+      //     {
+      //       loader: 'html-loader', // снизу вверх
+      //       options: {
+      //         attrs: ['img:src']
+      //       }
+      //     }
+      //   ]
+      // },
       {
         test: /\.(jpg|gif|png|svg)$/,
         use: [
@@ -85,5 +111,11 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+  plugins: [
+    new htmlWebpackPlugin({
+        title: 'Chat app',
+        template: './src/index.pug'
+    })
+  ]
 };

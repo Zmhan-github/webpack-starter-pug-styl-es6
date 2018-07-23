@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name]-bundle.js',
-    publicPath: '/' // общий путь для бандла 
+    publicPath: '/' // общий путь для бандла
   },
   module: {
     rules: [
@@ -27,7 +27,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          { 
+          {
             loader: miniCSSExtractPlugin.loader
           },
           {
@@ -38,7 +38,7 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          { 
+          {
             loader: miniCSSExtractPlugin.loader
           },
           {
@@ -50,10 +50,27 @@ module.exports = {
         ]
       },
       {
+        test: /\.styl$/,
+        use: [
+          { loader: miniCSSExtractPlugin.loader },
+          { loader: "css-loader"                },
+          { loader: "postcss-loader"            },
+          { loader: "stylus-loader"             }
+        ]
+      },
+      {
         test: /\.html$/,
         use: [
           {
             loader: 'html-loader'
+          }
+        ]
+      },
+      {
+        test: /\.pug$/,
+        use: [
+          {
+            loader: 'pug-loader'
           }
         ]
       },
@@ -76,8 +93,8 @@ module.exports = {
         filename: '[name]-[contenthash].css'
     }),
     new htmlWebpackPlugin({
-        title: 'Chat app',
-        template: './src/index.html'
+        title: 'Chat &mdash; app',
+        template: './src/index.pug'
     })
   ]
 };

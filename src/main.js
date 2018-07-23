@@ -1,4 +1,5 @@
 require('babel-runtime/regenerator');
 require('normalize.css');
-require('./sass/main.scss');
-require('./index.html');
+require('./stylus/main.styl');
+require('./js/main.js');
+require('./index.pug');
